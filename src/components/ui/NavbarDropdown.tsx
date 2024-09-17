@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dropdown,
   DropdownItem,
@@ -7,8 +8,14 @@ import {
 } from "@nextui-org/dropdown";
 import { Avatar } from "@nextui-org/avatar";
 import { useRouter } from "next/navigation";
+import { Button } from "@nextui-org/button";
+import { logout } from "@/src/services/AuthService";
 const NavbarDropdown = () => {
   const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const handleNavigation = (pathname: string) => {
     router.push(pathname);
@@ -41,8 +48,12 @@ const NavbarDropdown = () => {
             Claim Request
           </DropdownItem>
 
-          <DropdownItem key="delete" className="text-danger" color="danger">
-            Delete file
+          <DropdownItem
+            onClick={() => handleLogout()}
+            className="text-danger"
+            color="danger"
+          >
+            Logout
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
