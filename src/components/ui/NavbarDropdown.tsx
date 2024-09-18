@@ -8,13 +8,15 @@ import {
 } from "@nextui-org/dropdown";
 import { Avatar } from "@nextui-org/avatar";
 import { useRouter } from "next/navigation";
-import { Button } from "@nextui-org/button";
 import { logout } from "@/src/services/AuthService";
+import { useUser } from "@/src/context/user.provider";
 const NavbarDropdown = () => {
   const router = useRouter();
-
+  const { user, setIsLoading: userLoading } = useUser();
+  console.log(user);
   const handleLogout = () => {
     logout();
+    userLoading(true);
   };
 
   const handleNavigation = (pathname: string) => {
@@ -25,7 +27,7 @@ const NavbarDropdown = () => {
     <div>
       <Dropdown>
         <DropdownTrigger>
-          <Avatar className="cursor-pointer" name="Rak" />
+          <Avatar className="cursor-pointer" src={user?.profilePhoto} />
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
           <DropdownItem onClick={() => handleNavigation("/profile")}>
