@@ -7,16 +7,21 @@ import {
   DropdownTrigger,
 } from "@nextui-org/dropdown";
 import { Avatar } from "@nextui-org/avatar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/src/services/AuthService";
 import { useUser } from "@/src/context/user.provider";
+import { protectedRoutes } from "@/src/constant";
 const NavbarDropdown = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, setIsLoading: userLoading } = useUser();
-  console.log(user);
+
   const handleLogout = () => {
     logout();
     userLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
   };
 
   const handleNavigation = (pathname: string) => {
