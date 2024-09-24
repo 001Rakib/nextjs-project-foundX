@@ -9,19 +9,20 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-// import { allDistict } from "@bangladeshi/bangladesh-address";
+import { allDistict } from "@bangladeshi/bangladesh-address";
 import { ChangeEvent, useState } from "react";
 
 import FXInput from "@/src/components/form/FXInput";
 import FXDatePicker from "@/src/components/form/FXDatePicker";
 import FXSelect from "@/src/components/form/FXSelect";
-import { useGetCategories } from "@/src/hooks/categoreis.hook";
 import FXTextarea from "@/src/components/form/FXTextArea";
-import { AddIcon, TrashIcon } from "@/src/assets/icons";
 import { useUser } from "@/src/context/user.provider";
 import { useRouter } from "next/navigation";
 import Loading from "@/src/components/ui/Loading";
 import dateToISO from "@/src/utils/dateToISO";
+import { AddIcon, TrashIcon } from "@/src/assets/icon";
+import { useGetCategories } from "@/src/hooks/categories.hook";
+import { useCreatePost } from "@/src/hooks/post.hook";
 
 const cityOptions = allDistict()
   .sort()
