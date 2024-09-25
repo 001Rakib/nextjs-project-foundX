@@ -23,6 +23,7 @@ import dateToISO from "@/src/utils/dateToISO";
 import { AddIcon, TrashIcon } from "@/src/assets/icon";
 import { useGetCategories } from "@/src/hooks/categories.hook";
 import { useCreatePost } from "@/src/hooks/post.hook";
+import generateDescription from "@/src/services/ImageDescription";
 
 const cityOptions = allDistict()
   .sort()
@@ -36,6 +37,8 @@ const cityOptions = allDistict()
 export default function CreatePost() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
@@ -109,6 +112,21 @@ export default function CreatePost() {
       };
 
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDescriptionGeneration = async () => {
+    setIsLoading(true);
+    try {
+      const response = await generateDescription(
+        imagePreviews[0],
+        "write a description for social media for post describing the image that start with , Found this...."
+      );
+      methods.setValue("description", response);
+      setIsLoading(false);
+    } catch (error: any) {
+      setError(error?.message);
+      setIsLoading(false);
     }
   };
 
@@ -187,6 +205,21 @@ export default function CreatePost() {
               <div className="min-w-fit flex-1">
                 <FXTextarea label="Description" name="description" />
               </div>
+            </div>
+
+            <div className="flex justify-end gap-5">
+              {methods.getValues("description") && (
+                <Button onClick={() => methods.resetField("description")}>
+                  Clear
+                </Button>
+              )}
+              <Button
+                isDisabled={imagePreviews.length > 0 ? false : true}
+                isLoading={isLoading}
+                onClick={() => handleDescriptionGeneration()}
+              >
+                {isLoading ? "Generating" : "Generate with AI"}
+              </Button>
             </div>
 
             <Divider className="my-5" />

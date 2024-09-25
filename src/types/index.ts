@@ -52,3 +52,9 @@ export interface IInput {
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
 }
+export interface ISearchResult {
+  title: string;
+  description: string;
+  thumbnail: string;
+  id: string;
+}
